@@ -107,15 +107,32 @@
 };
 
 &gem0 {
-	status = "okay";
-	phy-mode = "rgmii-id";
-	phy-handle = <&phy0>;
+    status = "okay";
+    phy-mode = "rgmii-id";
+    phy-handle = <&phy0>;
+    compatible = "xlnx,zynq-gem", "cdns,zynq-gem", "cdns,gem";
+    max-frame-size = <2048>;
+    jumbo-max-len = <0x0800>;
+    phy0: phy@0 { 
+        reg = <0>;
+        compatible = "ethernet-phy-ieee802.3-c22";        
+        reset-gpios = <&gpio0 46 1>; 
+    };
+};
 
-	phy0: phy@0 { /* Marvell 88e1512 */
-		reg = <0>;
-		compatible = "ethernet-phy-ieee802.3-c22";
-		reset-gpios = <&gpio0 46 1>;
-	};
+&{/} {
+    reserved-memory {
+        #address-cells = <1>;
+        #size-cells = <1>;
+        ranges;
+        linux,cma {
+            compatible = "shared-dma-pool";
+            reusable;
+            size = <0x10000000>;
+            alignment = <0x2000>;
+            linux,cma-default;
+        };
+    };
 };
 
 &qspi {

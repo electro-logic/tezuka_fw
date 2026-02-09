@@ -1,0 +1,13 @@
+#!/bin/sh
+case "$1" in
+  start)
+    echo "Configuring Jumbo Network and Static IP..."
+    ip link set eth0 down    
+    ip link set eth0 mtu 2048    
+    ip link set eth0 up    
+    ip addr flush dev eth0
+    ip addr add 192.168.1.10/24 dev eth0    
+    # ip route add default via 192.168.1.1        
+    ;;
+esac
+exit 0
